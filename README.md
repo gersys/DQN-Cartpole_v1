@@ -21,4 +21,4 @@ Training original DQN & multi-step in sequence.
 ```
 
 ## Result
-![Result](C:\Users\CHC\Desktp\result.jpg)
+![Result](\result.png)
