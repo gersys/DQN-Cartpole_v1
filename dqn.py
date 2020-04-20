@@ -65,9 +65,9 @@ class Network:
 
     def reward_sum(self, rewards,i,n_steps,gamma):
         total_reward=0
-        for r in range(0,n_steps-1):
+        for r in range(0,n_steps):
             #print("rewards {}:{}".format(r,rewards[i]*(gamma**r)))
-            total_reward+=rewards[i]*(gamma**r)
+            total_reward+=rewards[i+r]*(gamma**r)
 
         #print("total_reward:{}".format(total_reward))
         #exit()
@@ -77,7 +77,7 @@ class Network:
     def Multi_train(self, TargetNet,n_steps):
         if len(self.experience['s']) < self.min_experiences:
             return 0
-        ids = np.random.randint(low=0, high=len(self.experience['s'])-n_steps, size=self.batch_size)
+        ids = np.random.randint(low=0, high=max(len(self.experience['s'])-n_steps+1,0), size=self.batch_size)
         states = np.asarray([self.experience['s'][i] for i in ids])
         actions = np.asarray([self.experience['a'][i] for i in ids])
         rewards = np.asarray([ self.reward_sum(self.experience['r'],i,n_steps,self.gamma) for i in ids])
@@ -172,7 +172,7 @@ class DQN:
             lr = 1e-4
         else:
             gamma = 0.99
-            copy_step = 5
+            copy_step = 3
             num_states = len(self.env.observation_space.sample())
             num_actions = self.env.action_space.n
             hidden_units = [200, 200]
